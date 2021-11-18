@@ -5,7 +5,7 @@ module "lambda" {
   runtime = "nodejs14.x"
 
   source_dir  = "${path.module}/src"
-  output_path = "${path.module}/build/lambda.zip"
+  output_dir = "${path.module}/build/lambda.zip"
 
   name      = var.name
   role_name = var.role_name
