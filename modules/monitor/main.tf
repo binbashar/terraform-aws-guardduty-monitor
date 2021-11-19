@@ -1,6 +1,5 @@
 module "lambda" {
-  source  = "opendevsecops/lambda/aws"
-  version = "2.0.0"
+  source  = "https://github.com/binbashar/terraform-aws-lambda-1?ref=v2.5.0"
 
   runtime = "nodejs14.x"
 
