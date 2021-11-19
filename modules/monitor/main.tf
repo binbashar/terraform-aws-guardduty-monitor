@@ -1,5 +1,5 @@
 module "lambda" {
-  source  = "https://github.com/binbashar/terraform-aws-lambda-1?ref=v2.5.0"
+  source  = "github.com/binbashar/terraform-aws-lambda-1.git?ref=v2.5.0"
 
   runtime = "nodejs14.x"
 
