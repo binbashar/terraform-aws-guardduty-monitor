@@ -47,7 +47,7 @@ exports.handler = async (event) => {
 
         const slackMessage = {
             text:     `*${title ? title : '-'}*`,
-            username: 'aws-binbash-org',
+            username: 'aws-organization',
             attachments: [
                 {
                     color: 'danger',
