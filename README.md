@@ -30,6 +30,7 @@ The new version of this module stores the webhook URL more securely:
 * If you provide the Webhook URL as a string (with `monitor_slack_notification_url`), the module will create and then store it as a secret value in the AWS SSM Parameter Store (free service). 
 * If you already have the Webhook URL in the AWS SSM Parameter Store service, you can provide the name(`slack_notification_url_ssm_name`), and the module will create the required permissions.
 * If you already have the Webhook URL in the AWS Secret Manager service, you can provide the ARN and key(`slack_notification_url_secret_arn` and `slack_notification_url_secret_key`), and the module will create the required permissions.
+
 With this change, AWS Lambda will never expose the Webhook URL. 
 
 This functionality relies on the AWS Parameters and Secrets Lambda Extension. This tool reduces latency and cost (by caching secrets and diminishing API calls). However, by default, it checks if the secret has changed every 10 minutes. You can adjust this behavior by modifying the settings `ssm_parameter_store_ttl` or `secrets_manager_ttl`.
