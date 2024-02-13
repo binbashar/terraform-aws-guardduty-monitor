@@ -1,8 +1,6 @@
 const url = require('url');
 const https = require('https');
 
-const paramExt = require('paramSecretsExt');
-
 const post = async (uri, body) => {
     body = JSON.stringify(body);
 
