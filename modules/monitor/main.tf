@@ -1,7 +1,7 @@
 module "lambda" {
   source = "github.com/binbashar/terraform-aws-lambda-1.git?ref=v2.5.10"
 
-  runtime = "nodejs20.x" # "nodejs14.x"
+  runtime = "nodejs20.x"
 
   source_dir = "${path.module}/src"
   output_dir = "${path.module}/build/lambda.zip"
