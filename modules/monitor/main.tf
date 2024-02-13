@@ -17,18 +17,18 @@ module "lambda" {
   }
 }
 
-# resource "aws_iam_role_policy" "lambda_secret_manager" {
-#   name = "secret-manager-policy"
-#   role = module.lambda.role_name
+resource "aws_iam_role_policy" "lambda_secret_manager" {
+  name = "secret-manager-policy"
+  role = module.lambda.role_name
 
-#   policy = data.aws_iam_policy_document.lambda_secret_manager.json
-# }
+  policy = data.aws_iam_policy_document.lambda_secret_manager.json
+}
 
-# data "aws_iam_policy_document" "lambda_secret_manager" {
-#   statement {
-#     sid       = ""
-#     effect    = "Allow"
-#     resources = [var.slack_notification_url]
-#     actions   = ["secretsmanager:GetSecretValue"]
-#   }
-# }
+data "aws_iam_policy_document" "lambda_secret_manager" {
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = [var.slack_notification_url]
+    actions   = ["secretsmanager:GetSecretValue"]
+  }
+}
