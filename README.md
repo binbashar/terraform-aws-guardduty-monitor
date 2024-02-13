@@ -70,7 +70,7 @@ No requirements.
 | <a name="input_event_rule_name"></a> [event\_rule\_name](#input\_event\_rule\_name) | The event rule's name | `string` | `"opendevsecops_guardduty_monitor"` | no |
 | <a name="input_monitor_name"></a> [monitor\_name](#input\_monitor\_name) | A unique name for your Lambda Function | `string` | `"opendevsecops_guardduty_monitor"` | no |
 | <a name="input_monitor_role_name"></a> [monitor\_role\_name](#input\_monitor\_role\_name) | A unique name for your Lambda Function Role | `string` | `"opendevsecops_guardduty_monitor_role"` | no |
-| <a name="input_monitor_slack_notification_url"></a> [monitor\_slack\_notification\_url](#input\_monitor\_slack\_notification\_url) | AWS Secrets Manager ARN where stored URL for slack notifications | `any` | `null` | no |
+| <a name="input_monitor_slack_notification_url"></a> [monitor\_slack\_notification\_url](#input\_monitor\_slack\_notification\_url) | AWS Secrets Manager ARN where stored URL for slack notifications | `any` | n/a | yes |
 
 ## Outputs
 

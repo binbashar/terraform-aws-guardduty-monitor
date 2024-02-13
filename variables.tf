@@ -10,7 +10,6 @@ variable "monitor_role_name" {
 
 variable "monitor_slack_notification_url" {
   description = "AWS Secrets Manager ARN where stored URL for slack notifications"
-  default     = null
 }
 
 variable "event_rule_name" {
