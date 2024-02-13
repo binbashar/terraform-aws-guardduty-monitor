@@ -1,59 +1,49 @@
-const url = require('url');
-const https = require('https');
+const url = require('url')
+const https = require('https')
 
 const post = async (uri, body) => {
-    body = JSON.stringify(body);
+    body = JSON.stringify(body)
 
-    const options = url.parse(uri);
+    const options = url.parse(uri)
 
-    options.method = 'POST';
+    options.method = 'POST'
 
     options.headers = {
         'Content-Type': 'application/json',
         'Content-Length': body.length
-    };
+    }
 
     return new Promise((resolve, reject) => {
         const req = https.request(options, (res) => {
             if (res.statusCode === 200) {
                 res.on('end', () => {
-                    resolve();
-                });
+                    resolve()
+                })
             } else {
-                reject(new Error(`Unexpected status code: ${res.statusCode}`));
+                reject(new Error(`Unexpected status code: ${res.statusCode}`))
             }
-        });
+        })
 
         req.on('error', (error) => {
-            reject(error);
-        });
+            reject(error)
+        })
 
-        req.end(body);
-    });
-};
+        req.end(body)
+    })
+}
 
 exports.handler = async (event) => {
-    console.log(event);
-    
-    let slack_webhook = '';
-    
-    if (process.env.PARAMETER_NAME) {
-        slack_webhook = await paramExt.getParameter(process.env.PARAMETER_NAME, process.env.PARAMETER_ENCRYPTED);
-    }
-    
-    if (process.env.SECRET_ARN) {
-        slack_webhook = await paramExt.getSecret(process.env.SECRET_ARN, process.env.SECRET_KEY);
-    }
-    
-    const { detail={} } = event;
-    const { title='', description='', accountId='', region='' } = detail;
+    console.log(event)
+
+    const { detail={} } = event
+    const { title='', description='', accountId='', region='' } = detail
 
     if (!title && !description) {
-        return;
+        return
     }
 
-    if (slack_webhook) {
-        console.log('Sending slack notification');
+    if (process.env.SLACK_NOTIFICATION_URL) {
+        console.log('Sending slack notification')
 
         const slackMessage = {
             text:     `*${title ? title : '-'}*`,
@@ -84,11 +74,11 @@ exports.handler = async (event) => {
         };
 
         try {
-            await post(slack_webhook, slackMessage);
+            await post(process.env.SLACK_NOTIFICATION_URL, slackMessage)
         } catch (e) {
-            console.error(e);
+            console.error(e)
         }
 
-        console.log('Slack notification sent');
+        console.log('Slack notification sent')
     }
-};
+}
