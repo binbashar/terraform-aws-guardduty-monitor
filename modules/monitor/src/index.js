@@ -1,10 +1,26 @@
-const url = require('url')
-const https = require('https')
+const url = require('url');
+const https = require('https');
+
+const { SecretsManagerClient, GetSecretValueCommand } = require("@aws-sdk/client-secrets-manager");
+
+const secretsManager = new SecretsManagerClient();
+
+async function getSecret(secretName) {
+
+    try {
+        const command = new GetSecretValueCommand({ SecretId: secretName });
+        const data = await secretsManager.send(command);
+        return data.SecretString;
+    } catch (err) {
+        console.error("Error retrieving secret:", err);
+        throw err;
+    }
+}
 
 const post = async (uri, body) => {
-    body = JSON.stringify(body)
+    body = JSON.stringify(body);
 
-    const options = url.parse(uri)
+    const options = url.parse(uri);
 
     options.method = 'POST'
 
@@ -16,20 +32,20 @@ const post = async (uri, body) => {
     return new Promise((resolve, reject) => {
         const req = https.request(options, (res) => {
             if (res.statusCode === 200) {
-                res.on('end', () => {
-                    resolve()
-                })
+                res.once('end', () => {
+                    resolve();
+                });
             } else {
-                reject(new Error(`Unexpected status code: ${res.statusCode}`))
+                reject(new Error(`Unexpected status code: ${res.statusCode}`));
             }
-        })
+        });
 
         req.on('error', (error) => {
-            reject(error)
-        })
+            reject(error);
+        });
 
-        req.end(body)
-    })
+        req.end(body);
+    });
 }
 
 exports.handler = async (event) => {
@@ -40,6 +56,14 @@ exports.handler = async (event) => {
 
     if (!title && !description) {
         return
+    }
+    
+    let slackWebhook = ""
+
+    try {
+        slackWebhook = await getSecret(process.env.SLACK_NOTIFICATION_URL);
+    } catch (error) {
+        console.error('Error retrieving secret:', error);
     }
 
     if (process.env.SLACK_NOTIFICATION_URL) {
@@ -74,7 +98,7 @@ exports.handler = async (event) => {
         };
 
         try {
-            await post(process.env.SLACK_NOTIFICATION_URL, slackMessage)
+            await post(slackWebhook, slackMessage)
         } catch (e) {
             console.error(e)
         }
