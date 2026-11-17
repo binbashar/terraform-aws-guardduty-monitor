@@ -16,3 +16,8 @@ variable "event_rule_name" {
   description = "The event rule's name"
   default     = "opendevsecops_guardduty_monitor"
 }
+variable "monitor_runtime" {
+  description = "Lambda runtime for the monitor function"
+  type        = string
+  default     = "nodejs24.x"
+}

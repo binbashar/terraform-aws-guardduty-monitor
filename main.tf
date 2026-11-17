@@ -3,6 +3,7 @@ module "monitor" {
 
   name      = var.monitor_name
   role_name = var.monitor_role_name
+  runtime   = var.monitor_runtime
 
   slack_notification_url = var.monitor_slack_notification_url
 

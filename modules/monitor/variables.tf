@@ -11,3 +11,8 @@ variable "role_name" {
 variable "slack_notification_url" {
   description = "URL for slack notifications"
 }
+variable "runtime" {
+  description = "Lambda runtime for the monitor function"
+  type        = string
+  default     = "nodejs24.x"
+}
