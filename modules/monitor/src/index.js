@@ -1,4 +1,3 @@
-const url = require('url');
 const https = require('https');
 
 const { SecretsManagerClient, GetSecretValueCommand } = require("@aws-sdk/client-secrets-manager");
@@ -20,17 +19,21 @@ async function getSecret(secretName) {
 const post = async (uri, body) => {
     body = JSON.stringify(body);
 
-    const options = url.parse(uri);
-
-    options.method = 'POST'
-
-    options.headers = {
-        'Content-Type': 'application/json',
-        'Content-Length': body.length
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // Bytes, not characters: a finding with non-ASCII text would
+            // otherwise send a truncated body.
+            'Content-Length': Buffer.byteLength(body)
+        }
     }
 
     return new Promise((resolve, reject) => {
-        const req = https.request(options, (res) => {
+        const req = https.request(new URL(uri), options, (res) => {
+            // The body must be consumed or 'end' never fires, leaving the
+            // function hanging until its timeout (and then retried).
+            res.resume();
             if (res.statusCode === 200) {
                 res.once('end', () => {
                     resolve();
